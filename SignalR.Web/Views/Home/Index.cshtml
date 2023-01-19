@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Scripts
+{
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(() => {
+            var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug).withUrl("https://localhost:7290/MyHub").build()
+
+            //var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Debug).withAutomaticReconnect().withUrl("https://localhost:7290/MyHub").build() // => withAutomaticReconnect ile kullanmak istersek bunu yapmalıyız.
+
+            statusShow();
+            Start();
+
+            // Functions
+            function statusShow() {
+                $("#conStatus").text(connection.connectionState);
+            }
+
+            function Start() {
+                connection.start().then(() => {
+                    statusShow();
+                    $("#loading").hide();
+                }).catch((err) => {
+                    console.log(err)
+                    setTimeout(() => start(), 2000)
+                });
+            }
+           
+            statusShow();
+
+            //Subscribes
+            connection.onreconnecting(err => {
+                $("#loading").show();
+                statusShow();
+                console.log("onreconnection: " + err);
+            })
+
+            connection.onreconnected(connectionId => {
+                $("#loading").hide();
+                statusShow();
+            })
+
+            connection.onclose(() => {
+                $("#loading").hide();
+                statusShow();
+                Start();
+            })
+
+            connection.on("ReceiveClientCount", (clientCount) => {
+                $("#clientCount").text(clientCount)
+            })
+
+            connection.on("Notify", (countText) => {
+                $("#notify").html(`<div class="alert alert-success">${countText}</div>`)
+            })
+
+            // Clicks
+            $("#btnNameSave").click(() => {
+                connection.invoke("SendMessage", $("#txtName").val()).catch((err) => console.log(err))
+                // invoke server daki metodu çağırmamızı sağlar.
+            })
+
+            // on methods
+            connection.on("ReceiveName", (name) => {
+                $("#nameList").append(`<li class="list-group-item">${name}</li>`)
+            })
+        })
+
+    </script>
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <input type="text" class="form-control" id="txtName" />
+        <hr />
+        <button class="btn btn-primary" id="btnNameSave">İsim Kaydet</button>
+        <div class="alert alert-info">
+            <div class="float-lg-start">
+                Bağlantı Durumu: <strong id="conStatus"></strong>
+                , Client Sayısı: <strong id="clientCount"></strong>
+            </div>
+            <div class="float-lg-end">
+                <div id="loading" class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div id="notify"></div>
+    </div>
+    <div class="col-md-8 offset-2">
+        <ul class="list-group" id="nameList"></ul>
+    </div>
+</div>

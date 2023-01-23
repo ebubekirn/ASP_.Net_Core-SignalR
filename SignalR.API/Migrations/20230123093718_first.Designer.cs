@@ -11,8 +11,8 @@ using SignalR.API.Models;
 namespace SignalR.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230120153245_firsy")]
-    partial class firsy
+    [Migration("20230123093718_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

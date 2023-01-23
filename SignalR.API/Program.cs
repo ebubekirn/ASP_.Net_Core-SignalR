@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using SignalR.API.Hubs;
 using SignalR.API.Models;
@@ -27,6 +28,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSignalR();
 
+//builder.Services.AddScoped<IHubContext<MyHub>>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,9 +41,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("CorsPolicy");
-
 app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 

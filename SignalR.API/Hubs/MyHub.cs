@@ -14,6 +14,10 @@ namespace SignalR.API.Hubs
         private static List<string> Names { get; set; } = new List<string>();
         private static int ClientCount { get; set; } = 0;
         public static int TeamCount { get; set; } = 7;
+        public async Task SendProduct(Product p)
+        {
+            Clients.All.SendAsync("ReceiveProduct", p);
+        }
         public async Task SendMessage(string name)
         {
             if (Names.Count >= TeamCount)

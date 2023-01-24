@@ -18,6 +18,11 @@ namespace SignalR.Web.Controllers
             return View();
         }
 
+        public IActionResult Covid19Show()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

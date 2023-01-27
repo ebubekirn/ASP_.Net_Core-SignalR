@@ -1,0 +1,31 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:22911",
+      "sslPort": 44353
+    }
+  },
+  "profiles": {
+    "SignalRServerExample": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false, // Eğer server ayağa kalktığında browser çalışsın istersem bunu true yapmam yeterli olacaktır.
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7122;http://localhost:5032",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

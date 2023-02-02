@@ -1,3 +1,4 @@
+using SignalRServerExample.Business;
 using SignalRServerExample.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,9 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 						  .AllowAnyHeader()
 						  .AllowCredentials()
 						  .SetIsOriginAllowed(origin => true)
-)); 
+));
+
+builder.Services.AddTransient<MyBusiness>();
 
 builder.Services.AddSignalR();
 
@@ -37,5 +40,6 @@ app.MapControllers();
 
 // https://localhost:7122/myHub => MyHub ıma bu şekilde bağlanabilirm.
 app.MapHub<MyHub>("/myHub");
+app.MapHub<MessageHub>("/messageHub");
 
 app.Run();
